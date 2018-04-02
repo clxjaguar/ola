@@ -839,6 +839,7 @@ PLUGIN_SUPPORT(stageprofi, USE_STAGEPROFI)
 PLUGIN_SUPPORT(uartdmx, USE_UART, [$have_uart])
 PLUGIN_SUPPORT(usbdmx, USE_LIBUSB, [$have_libusb])
 PLUGIN_SUPPORT(usbpro, USE_USBPRO)
+PLUGIN_SUPPORT(usbdmxdotcom, USE_USBDMXDOTCOM)
 
 # Finally build a list of the required plugin libs.
 PLUGIN_LIBS=''
