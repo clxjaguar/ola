@@ -111,6 +111,10 @@
 #include "plugins/usbdmx/UsbDmxPlugin.h"
 #endif  // USE_LIBUSB
 
+#ifdef USE_USBDMXDOTCOM
+#include "plugins/usbdmxdotcom/UDDCPlugin.h"
+#endif  // USE_USBDMXDOTCOM
+
 #ifdef USE_FTDI
 #include "plugins/ftdidmx/FtdiDmxPlugin.h"
 #endif  // USE_FTDI
@@ -239,6 +243,10 @@ void DynamicPluginLoader::PopulatePlugins() {
 #ifdef USE_LIBUSB
   m_plugins.push_back(new ola::plugin::usbdmx::UsbDmxPlugin(m_plugin_adaptor));
 #endif  // USE_LIBUSB
+
+#ifdef USE_USBDMXDOTCOM
+  m_plugins.push_back(new ola::plugin::uddc::UDDCPlugin(m_plugin_adaptor));
+#endif  // USE_USBDMXDOTCOM
 
 #ifdef USE_PATHPORT
   m_plugins.push_back(
