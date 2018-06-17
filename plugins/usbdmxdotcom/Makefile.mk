@@ -1,5 +1,4 @@
 if USE_USBDMXDOTCOM
-# HERE BE DRAGONS
 lib_LTLIBRARIES += plugins/usbdmxdotcom/libolausbdmxdotcom.la
 
 # Plugin description is generated from README.md
@@ -13,7 +12,7 @@ plugins_usbdmxdotcom_libolausbdmxdotcom_la_SOURCES = \
     plugins/usbdmxdotcom/UDDCDevice.cpp \
     plugins/usbdmxdotcom/UDDCDevice.h \
     plugins/usbdmxdotcom/UDDCPlugin.cpp \
-    plugins/usbdmxdotcom/UDDCPlugin.h 
+    plugins/usbdmxdotcom/UDDCPlugin.h
 plugins_uddc_libolausbdmxdotcom_la_CXXFLAGS = $(COMMON_CXXFLAGS) $(liblo_CFLAGS)
 plugins_uddc_libolausbdmxdotcom_la_LIBADD = \
     olad/plugin_api/libolaserverplugininterface.la
