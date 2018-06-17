@@ -25,7 +25,7 @@
 
 namespace ola {
 namespace plugin {
-namespace uddc {
+namespace usbdmxdotcom {
 
 class UDDCDevice;
 

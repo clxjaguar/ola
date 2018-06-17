@@ -30,10 +30,11 @@
 #include "olad/Preferences.h"
 #include "plugins/usbdmxdotcom/UDDCDevice.h"
 #include "plugins/usbdmxdotcom/UDDCPlugin.h"
+#include "plugins/usbdmxdotcom/UDDCPluginDescription.h"
 
 namespace ola {
 namespace plugin {
-namespace uddc {
+namespace usbdmxdotcom {
 
 using ola::network::IPV4SocketAddress;
 using std::set;
@@ -74,8 +75,11 @@ bool UDDCPlugin::StopHook() {
 }
 
 
+/*
+ * Return the description for this plugin
+ */
 string UDDCPlugin::Description() const {
-  return "";
+    return plugin_description;
 }
 
 

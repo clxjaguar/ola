@@ -245,7 +245,7 @@ void DynamicPluginLoader::PopulatePlugins() {
 #endif  // USE_LIBUSB
 
 #ifdef USE_USBDMXDOTCOM
-  m_plugins.push_back(new ola::plugin::uddc::UDDCPlugin(m_plugin_adaptor));
+  m_plugins.push_back(new ola::plugin::usbdmxdotcom::UDDCPlugin(m_plugin_adaptor));
 #endif  // USE_USBDMXDOTCOM
 
 #ifdef USE_PATHPORT

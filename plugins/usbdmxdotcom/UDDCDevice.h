@@ -31,7 +31,7 @@ namespace ola {
 class AbstractPlugin;
 
 namespace plugin {
-namespace uddc {
+namespace usbdmxdotcom {
 
 class UDDCDevice: public Device {
  public:
