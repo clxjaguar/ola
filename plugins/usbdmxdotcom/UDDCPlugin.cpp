@@ -58,11 +58,22 @@ const char UDDCPlugin::FLOAT_INDIVIDUAL_FORMAT[] = "individual_float";
 const char UDDCPlugin::INT_ARRAY_FORMAT[] = "int_array";
 const char UDDCPlugin::INT_INDIVIDUAL_FORMAT[] = "individual_int";
 
+const char UDDCPlugin::UDDC_DEVICE_PATH[] = "";
+const char UDDCPlugin::DEVICE_KEY[] = "device";
+
 /*
  * Start the plugin.
  */
 bool UDDCPlugin::StartHook() {
-  return true;
+    UDDCDevice *device = new UDDCDevice(this, m_preferences, m_plugin_adaptor);
+
+    if (!device->Start()) {
+      return false;
+    }
+    
+    m_plugin_adaptor->RegisterDevice(device);
+    
+    return true;
 }
 
 
@@ -83,10 +94,28 @@ string UDDCPlugin::Description() const {
 }
 
 
-/**
- * Set the default preferences for the UDDC plugin.
+/*
+ * load the plugin prefs and default to sensible values
+ *
  */
 bool UDDCPlugin::SetDefaultPreferences() {
+  if (!m_preferences) {
+    return false;
+  }
+
+  bool save = false;
+
+  save |= m_preferences->SetDefaultValue(DEVICE_KEY, StringValidator(),
+                                         UDDC_DEVICE_PATH);
+
+  if (save) {
+    m_preferences->Save();
+  }
+
+  // Just check key exists, as we've set it to ""
+  if (!m_preferences->HasKey(DEVICE_KEY)) {
+    return false;
+  }
   return true;
 }
 

@@ -65,6 +65,8 @@ class UDDCPlugin: public ola::Plugin {
     static const char FLOAT_INDIVIDUAL_FORMAT[];
     static const char INT_ARRAY_FORMAT[];
     static const char INT_INDIVIDUAL_FORMAT[];
+    static const char UDDC_DEVICE_PATH[];
+    static const char DEVICE_KEY[];
 };
 }  // namespace uddc
 }  // namespace plugin

@@ -45,10 +45,8 @@ class UDDCDevice: public Device {
     typedef std::vector<PortConfig> PortConfigs;
 
     UDDCDevice(AbstractPlugin *owner,
-              PluginAdaptor *plugin_adaptor,
-              uint16_t udp_port,
-              const std::vector<std::string> &addresses,
-              const PortConfigs &port_configs);
+				class Preferences *preferences,
+              PluginAdaptor *plugin_adaptor);
     std::string DeviceId() const { return "1"; }
 
     bool AllowLooping() const { return true; }
@@ -63,6 +61,9 @@ class UDDCDevice: public Device {
     bool StartHook();
 
     static const char DEVICE_NAME[];
+    
+  private:
+	class Preferences *m_preferences;
 };
 }  // namespace uddc
 }  // namespace plugin

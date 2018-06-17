@@ -12,7 +12,9 @@ plugins_usbdmxdotcom_libolausbdmxdotcom_la_SOURCES = \
     plugins/usbdmxdotcom/UDDCDevice.cpp \
     plugins/usbdmxdotcom/UDDCDevice.h \
     plugins/usbdmxdotcom/UDDCPlugin.cpp \
-    plugins/usbdmxdotcom/UDDCPlugin.h
+    plugins/usbdmxdotcom/UDDCPlugin.h \
+    plugins/usbdmxdotcom/UDDCPort.h \
+    plugins/usbdmxdotcom/UDDCPort.cpp
 plugins_uddc_libolausbdmxdotcom_la_CXXFLAGS = $(COMMON_CXXFLAGS) $(liblo_CFLAGS)
 plugins_uddc_libolausbdmxdotcom_la_LIBADD = \
     olad/plugin_api/libolaserverplugininterface.la

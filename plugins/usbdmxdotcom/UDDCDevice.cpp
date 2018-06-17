@@ -22,6 +22,7 @@
 #include "ola/Logging.h"
 #include "ola/io/SelectServerInterface.h"
 #include "plugins/usbdmxdotcom/UDDCDevice.h"
+#include "plugins/usbdmxdotcom/UDDCPort.h"
 
 namespace ola {
 namespace plugin {
@@ -30,7 +31,7 @@ namespace usbdmxdotcom {
 using std::string;
 using std::vector;
 
-const char UDDCDevice::DEVICE_NAME[] = "UDDC Device";
+const char UDDCDevice::DEVICE_NAME[] = "usbdmx.com device";
 
 /**
  * Constructor for the UDDCDevice
@@ -42,16 +43,11 @@ const char UDDCDevice::DEVICE_NAME[] = "UDDC Device";
  * @param port_configs config to use for the ports
  */
 UDDCDevice::UDDCDevice(AbstractPlugin *owner,
-                     PluginAdaptor *plugin_adaptor,
-                     uint16_t udp_port,
-                     const vector<string> &addresses,
-                     const PortConfigs &port_configs)
+					class Preferences *preferences,
+                     PluginAdaptor *plugin_adaptor)
     : Device(owner, DEVICE_NAME),
       m_plugin_adaptor(plugin_adaptor),
-      m_port_addresses(addresses),
-      m_port_configs(port_configs) {
-	
-  if (udp_port == 0) return;
+      m_preferences(preferences)  {
 }
 
 /*
@@ -59,8 +55,13 @@ UDDCDevice::UDDCDevice(AbstractPlugin *owner,
  * @returns true if the device started successfully, false otherwise.
  */
 bool UDDCDevice::StartHook() {
-  bool ok = true;
-  return ok;
+  UDDCInputPort *input_port = new UDDCInputPort(this, 0, m_plugin_adaptor);
+  AddPort(input_port);
+  
+  UDDCOutputPort *output_port = new UDDCOutputPort(this, 0);
+  AddPort(output_port);
+  
+  return true;
 }
 }  // namespace uddc
 }  // namespace plugin
