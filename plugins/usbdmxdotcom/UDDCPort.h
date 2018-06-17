@@ -29,71 +29,33 @@ namespace ola {
 namespace plugin {
 namespace usbdmxdotcom {
 
-class UDDCPortHelper {
- public:
-  bool PreSetUniverse(Universe *old_universe, Universe *new_universe);
-  std::string Description(Universe *universe) const;
- private:
-  static const unsigned int MAX_UDDC_UNIVERSE = 63999;
-};
-
-
 class UDDCInputPort: public BasicInputPort {
  public:
   UDDCInputPort(UDDCDevice *parent, int id,
                 class PluginAdaptor *plugin_adaptor)
-      : BasicInputPort(parent, id, plugin_adaptor),
-        m_priority(ola::dmx::SOURCE_PRIORITY_DEFAULT) {
-    SetPriorityMode(PRIORITY_MODE_INHERIT);
+      : BasicInputPort(parent, id, plugin_adaptor) {
   }
 
-  bool PreSetUniverse(Universe *old_universe, Universe *new_universe) {
-    return m_helper.PreSetUniverse(old_universe, new_universe);
-  }
-  void PostSetUniverse(Universe *old_universe, Universe *new_universe);
-  std::string Description() const {
-    return m_helper.Description(GetUniverse());
-  }
   const ola::DmxBuffer &ReadDMX() const { return m_buffer; }
-  bool SupportsPriorities() const { return true; }
-  uint8_t InheritedPriority() const { return m_priority; }
+
+  std::string Description() const;
 
  private:
   ola::DmxBuffer m_buffer;
-  UDDCPortHelper m_helper;
-  uint8_t m_priority;
 };
 
 
 class UDDCOutputPort: public BasicOutputPort {
  public:
   UDDCOutputPort(UDDCDevice *parent, int id)
-      : BasicOutputPort(parent, id),
-        m_preview_on(false) {
-    m_last_priority = GetPriority();
+      : BasicOutputPort(parent, id) {
   }
 
-  ~UDDCOutputPort();
-
-  bool PreSetUniverse(Universe *old_universe, Universe *new_universe) {
-    return m_helper.PreSetUniverse(old_universe, new_universe);
-  }
-  void PostSetUniverse(Universe *old_universe, Universe *new_universe);
-  std::string Description() const {
-    return m_helper.Description(GetUniverse());
-  }
-
+  std::string Description() const;
   bool WriteDMX(const ola::DmxBuffer &buffer, uint8_t priority);
 
-  void SetPreviewMode(bool preview_mode) { m_preview_on = preview_mode; }
-  bool PreviewMode() const { return m_preview_on; }
-  bool SupportsPriorities() const { return true; }
-
  private:
-  bool m_preview_on;
-  uint8_t m_last_priority;
   ola::DmxBuffer m_buffer;
-  UDDCPortHelper m_helper;
 };
 }  // namespace usbdmxdotcom
 }  // namespace plugin

@@ -46,15 +46,19 @@ class UDDCPlugin: public ola::Plugin {
     bool SetDefaultPreferences();
 
     UDDCDevice *m_device;
+
+    static const char USBDMX_DEVICE_PATH[];
+    static const char DEVICE_KEY[];
+    static const char PLUGIN_NAME[];
+    static const char PLUGIN_PREFIX[];
+
+/*
     static const uint8_t DEFAULT_PORT_COUNT = 5;
     static const uint16_t DEFAULT_UDP_PORT = 7770;
-
     static const char DEFAULT_ADDRESS_TEMPLATE[];
     static const char DEFAULT_TARGETS_TEMPLATE[];
     static const char INPUT_PORT_COUNT_KEY[];
     static const char OUTPUT_PORT_COUNT_KEY[];
-    static const char PLUGIN_NAME[];
-    static const char PLUGIN_PREFIX[];
     static const char PORT_ADDRESS_TEMPLATE[];
     static const char PORT_TARGETS_TEMPLATE[];
     static const char PORT_FORMAT_TEMPLATE[];
@@ -65,8 +69,7 @@ class UDDCPlugin: public ola::Plugin {
     static const char FLOAT_INDIVIDUAL_FORMAT[];
     static const char INT_ARRAY_FORMAT[];
     static const char INT_INDIVIDUAL_FORMAT[];
-    static const char UDDC_DEVICE_PATH[];
-    static const char DEVICE_KEY[];
+*/
 };
 }  // namespace uddc
 }  // namespace plugin

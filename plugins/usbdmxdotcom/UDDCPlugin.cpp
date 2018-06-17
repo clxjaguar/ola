@@ -41,25 +41,28 @@ using std::set;
 using std::string;
 using std::vector;
 
-const char UDDCPlugin::DEFAULT_ADDRESS_TEMPLATE[] = "/dmx/universe/%d";
-const char UDDCPlugin::DEFAULT_TARGETS_TEMPLATE[] = "";
-const char UDDCPlugin::INPUT_PORT_COUNT_KEY[] = "input_ports";
-const char UDDCPlugin::OUTPUT_PORT_COUNT_KEY[] = "output_ports";
-const char UDDCPlugin::PLUGIN_NAME[] = "usbdmx.com";
+const char UDDCPlugin::USBDMX_DEVICE_PATH[] = "";
+const char UDDCPlugin::PLUGIN_NAME[] = "USBDMX.com";
 const char UDDCPlugin::PLUGIN_PREFIX[] = "usbdmxdotcom";
-const char UDDCPlugin::PORT_ADDRESS_TEMPLATE[] = "port_%d_address";
-const char UDDCPlugin::PORT_TARGETS_TEMPLATE[] = "port_%d_targets";
-const char UDDCPlugin::PORT_FORMAT_TEMPLATE[] = "port_%d_output_format";
-const char UDDCPlugin::UDP_PORT_KEY[] = "udp_listen_port";
-
-const char UDDCPlugin::BLOB_FORMAT[] = "blob";
-const char UDDCPlugin::FLOAT_ARRAY_FORMAT[] = "float_array";
-const char UDDCPlugin::FLOAT_INDIVIDUAL_FORMAT[] = "individual_float";
-const char UDDCPlugin::INT_ARRAY_FORMAT[] = "int_array";
-const char UDDCPlugin::INT_INDIVIDUAL_FORMAT[] = "individual_int";
-
-const char UDDCPlugin::UDDC_DEVICE_PATH[] = "";
 const char UDDCPlugin::DEVICE_KEY[] = "device";
+
+//const char UDDCPlugin::DEFAULT_ADDRESS_TEMPLATE[] = "/dmx/universe/%d";
+//const char UDDCPlugin::DEFAULT_TARGETS_TEMPLATE[] = "";
+//const char UDDCPlugin::INPUT_PORT_COUNT_KEY[] = "input_ports";
+//const char UDDCPlugin::OUTPUT_PORT_COUNT_KEY[] = "output_ports";
+//const char UDDCPlugin::PORT_ADDRESS_TEMPLATE[] = "port_%d_address";
+//const char UDDCPlugin::PORT_TARGETS_TEMPLATE[] = "port_%d_targets";
+//const char UDDCPlugin::PORT_FORMAT_TEMPLATE[] = "port_%d_output_format";
+//const char UDDCPlugin::UDP_PORT_KEY[] = "udp_listen_port";
+
+//const char UDDCPlugin::BLOB_FORMAT[] = "blob";
+//const char UDDCPlugin::FLOAT_ARRAY_FORMAT[] = "float_array";
+//const char UDDCPlugin::FLOAT_INDIVIDUAL_FORMAT[] = "individual_float";
+//const char UDDCPlugin::INT_ARRAY_FORMAT[] = "int_array";
+//const char UDDCPlugin::INT_INDIVIDUAL_FORMAT[] = "individual_int";
+
+
+
 
 /*
  * Start the plugin.
@@ -70,9 +73,9 @@ bool UDDCPlugin::StartHook() {
     if (!device->Start()) {
       return false;
     }
-    
+
     m_plugin_adaptor->RegisterDevice(device);
-    
+
     return true;
 }
 
@@ -106,7 +109,7 @@ bool UDDCPlugin::SetDefaultPreferences() {
   bool save = false;
 
   save |= m_preferences->SetDefaultValue(DEVICE_KEY, StringValidator(),
-                                         UDDC_DEVICE_PATH);
+                                         USBDMX_DEVICE_PATH);
 
   if (save) {
     m_preferences->Save();
