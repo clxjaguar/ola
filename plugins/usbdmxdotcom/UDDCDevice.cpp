@@ -21,8 +21,8 @@
 
 #include "ola/Logging.h"
 #include "ola/io/SelectServerInterface.h"
-#include "plugins/usbdmxdotcom/UDDCDevice.h"
 #include "plugins/usbdmxdotcom/UDDCPort.h"
+#include "plugins/usbdmxdotcom/UDDCDevice.h"
 
 namespace ola {
 namespace plugin {
@@ -37,17 +37,19 @@ const char UDDCDevice::DEVICE_NAME[] = "usbdmx.com device";
  * Constructor for the UDDCDevice
  * @param owner the plugin which created this device
  * @param plugin_adaptor a pointer to a PluginAdaptor object
- * @param udp_port the UDP port to listen on
+
  * @param addresses a list of strings to use as UDDC addresses for the input
  *   ports.
  * @param port_configs config to use for the ports
  */
 UDDCDevice::UDDCDevice(AbstractPlugin *owner,
-					class Preferences *preferences,
-                     PluginAdaptor *plugin_adaptor)
+                       class Preferences *preferences,
+                       const string &dev_path)
     : Device(owner, DEVICE_NAME),
-      m_plugin_adaptor(plugin_adaptor),
+      m_dev_path(dev_path),
       m_preferences(preferences)  {
+
+  OLA_INFO << "Create device " << m_dev_path;
 }
 
 /*
@@ -57,10 +59,12 @@ UDDCDevice::UDDCDevice(AbstractPlugin *owner,
 bool UDDCDevice::StartHook() {
   UDDCInputPort *input_port = new UDDCInputPort(this, 0, m_plugin_adaptor);
   AddPort(input_port);
-  
+
   UDDCOutputPort *output_port = new UDDCOutputPort(this, 0);
   AddPort(output_port);
-  
+
+  OLA_WARN << "TODO: the 'open()' will be there..";
+
   return true;
 }
 }  // namespace uddc

@@ -33,37 +33,31 @@ class AbstractPlugin;
 namespace plugin {
 namespace usbdmxdotcom {
 
-class UDDCDevice: public Device {
+class UDDCDevice: public ola::Device {
  public:
-    struct PortConfig {
-      //PortConfig() : data_format(UDDCNode::FORMAT_BLOB) {}
-      
-      //std::vector<UDDCTarget> targets;
-      //UDDCNode::DataFormat data_format;
-    };
-
-    typedef std::vector<PortConfig> PortConfigs;
-
     UDDCDevice(AbstractPlugin *owner,
-				class Preferences *preferences,
-              PluginAdaptor *plugin_adaptor);
-    std::string DeviceId() const { return "1"; }
+               class Preferences *preferences,
+               const std::string &dev_path);
 
+    ~UDDCDevice();
+    std::string DeviceId() const { return m_dev_path; }
+    ola::io::ConnectedDescriptor *GetSocket() const;
+/*
     bool AllowLooping() const { return true; }
     bool AllowMultiPortPatching() const { return true; }
-
+*/
  protected:
     PluginAdaptor *m_plugin_adaptor;
     const std::vector<std::string> m_port_addresses;
-    const PortConfigs m_port_configs;
     std::auto_ptr<class UDDCNode> m_uddc_node;
 
     bool StartHook();
 
     static const char DEVICE_NAME[];
-    
+
   private:
 	class Preferences *m_preferences;
+	const std::string m_dev_path;
 };
 }  // namespace uddc
 }  // namespace plugin
