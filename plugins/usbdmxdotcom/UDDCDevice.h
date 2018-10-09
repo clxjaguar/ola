@@ -48,7 +48,7 @@ class UDDCDevice: public ola::Device {
 */
  protected:
     PluginAdaptor *m_plugin_adaptor;
-    const std::vector<std::string> m_port_addresses;
+    //const std::vector<std::string> m_port_addresses;
     std::auto_ptr<class UDDCNode> m_uddc_node;
 
     bool StartHook();
@@ -56,8 +56,8 @@ class UDDCDevice: public ola::Device {
     static const char DEVICE_NAME[];
 
   private:
-	class Preferences *m_preferences;
-	const std::string m_dev_path;
+  const std::string m_dev_path;
+  class Preferences *m_preferences;
 };
 }  // namespace uddc
 }  // namespace plugin

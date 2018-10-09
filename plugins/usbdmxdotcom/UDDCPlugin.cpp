@@ -50,17 +50,37 @@ const char UDDCPlugin::USBDMX_DEVICE_PATH[] = "";
  * Start the plugin.
  */
 bool UDDCPlugin::StartHook() {
-    m_device = new UDDCDevice(this, m_preferences, m_plugin_adaptor);
+  vector<string> device_names;
+  vector<string>::iterator it;
+  UDDCDevice *device;
 
-    if (!m_device->Start()) {
-      delete m_device;
-      return false;
+  // fetch device listing
+  device_names = m_preferences->GetMultipleValue(DEVICE_KEY);
+
+  for (it = device_names.begin(); it != device_names.end(); ++it) {
+    if (it->empty()) {
+      OLA_DEBUG << "No path configured for device, please set one in "
+          "ola-usbdmxdotcom.conf";
+      continue;
+    }
+    //m_device = new UDDCDevice(this, m_preferences, m_plugin_adaptor);
+    device = new UDDCDevice(this, m_preferences, *it);
+    OLA_DEBUG << "Adding device " << *it;
+
+    if (!device->Start()) {
+      delete device;
+      continue;
     }
 
-    m_plugin_adaptor->RegisterDevice(m_device);
+    OLA_DEBUG << "Started device " << *it;
 
-    return true;
+    m_plugin_adaptor->AddReadDescriptor(device->GetSocket());
+    m_plugin_adaptor->RegisterDevice(device);
+    m_devices.push_back(device);
+  }
+  return true;
 }
+
 
 
 /*
@@ -70,15 +90,17 @@ bool UDDCPlugin::StartHook() {
 bool UDDCPlugin::StopHook() {
 	//UDDCDevice *device;
 	//m_devices.clear();
-	if (m_device) {
+/*	if (m_device) {
 		// stop the device
 		m_plugin_adaptor->UnregisterDevice(m_device);
 		bool ret = m_device->Stop();
 		delete m_device;
 		return ret;
 	}
-	
+
 	return true;
+*/
+return false;
 }
 
 /*

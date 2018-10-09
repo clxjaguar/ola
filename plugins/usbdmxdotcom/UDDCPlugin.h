@@ -20,8 +20,12 @@
 #define PLUGINS_UDDC_UDDCPLUGIN_H_
 
 #include <string>
+#include <vector>
+
+//#include "olad/Plugin.h"
+//#include "ola/plugin_id.h"
+#include "ola/io/Descriptor.h"
 #include "olad/Plugin.h"
-#include "ola/plugin_id.h"
 
 namespace ola {
 namespace plugin {
@@ -29,15 +33,16 @@ namespace usbdmxdotcom {
 
 class UDDCDevice;
 
-class UDDCPlugin: public ola::Plugin {
+class UDDCPlugin: public Plugin {
  public:
-    explicit UDDCPlugin(ola::PluginAdaptor *plugin_adaptor):
-      ola::Plugin(plugin_adaptor),
-      m_device(NULL) {}
+    explicit UDDCPlugin(PluginAdaptor *plugin_adaptor)
+      : Plugin(plugin_adaptor) {}
+    ~UDDCPlugin() {}
 
     std::string Name() const { return PLUGIN_NAME; }
-    std::string Description() const;
     ola_plugin_id Id() const { return OLA_PLUGIN_EXPERIMENTAL; }
+    std::string Description() const;
+    int SocketClosed(ola::io::ConnectedDescriptor *socket);
     std::string PluginPrefix() const { return PLUGIN_PREFIX; }
 
  private:
@@ -45,11 +50,13 @@ class UDDCPlugin: public ola::Plugin {
     bool StopHook();
     bool SetDefaultPreferences();
 
-    UDDCDevice *m_device;
+    std::vector<UDDCDevice*> m_devices;  // list of our devices
 
     static const char USBDMX_DEVICE_PATH[];
-    static const char DEVICE_KEY[];
+    static const char USBDMX_BASE_DEVICE_NAME[];
+    static const char USBDMX_SS_DEVICE_NAME[];
     static const char PLUGIN_NAME[];
+    static const char DEVICE_KEY[];
     static const char PLUGIN_PREFIX[];
 };
 }  // namespace uddc
