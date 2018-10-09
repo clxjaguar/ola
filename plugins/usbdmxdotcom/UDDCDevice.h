@@ -49,7 +49,7 @@ class UDDCDevice: public ola::Device {
 */
  protected:
     PluginAdaptor *m_plugin_adaptor;
-    const std::vector<std::string> m_port_addresses;
+    //const std::vector<std::string> m_port_addresses;
     std::auto_ptr<class UDDCNode> m_uddc_node;
 
     bool StartHook();
