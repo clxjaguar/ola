@@ -50,16 +50,14 @@ const char UDDCPlugin::USBDMX_DEVICE_PATH[] = "";
  * Start the plugin.
  */
 bool UDDCPlugin::StartHook() {
-    UDDCDevice *device;
+    m_device = new UDDCDevice(this, m_preferences, m_plugin_adaptor);
 
-    device = new UDDCDevice(this, m_preferences, m_plugin_adaptor);
-
-    if (!device->Start()) {
-      delete device;
+    if (!m_device->Start()) {
+      delete m_device;
       return false;
     }
 
-    m_plugin_adaptor->RegisterDevice(device);
+    m_plugin_adaptor->RegisterDevice(m_device);
 
     return true;
 }
@@ -70,9 +68,17 @@ bool UDDCPlugin::StartHook() {
  * @return true on success, false on failure
  */
 bool UDDCPlugin::StopHook() {
-  //UDDCDevice *device;
-  //m_devices.clear();
-  return true;
+	//UDDCDevice *device;
+	//m_devices.clear();
+	if (m_device) {
+		// stop the device
+		m_plugin_adaptor->UnregisterDevice(m_device);
+		bool ret = m_device->Stop();
+		delete m_device;
+		return ret;
+	}
+	
+	return true;
 }
 
 /*
