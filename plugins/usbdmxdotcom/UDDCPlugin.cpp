@@ -16,12 +16,12 @@
  * UDDCPlugin.cpp
  */
 
-#define __STDC_LIMIT_MACROS  // for UINT8_MAX & friends
-#include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <memory>
-#include <set>
+//#define __STDC_LIMIT_MACROS  // for UINT8_MAX & friends
+//#include <stdint.h>
+//#include <stdlib.h>
+//#include <stdio.h>
+//#include <memory>
+//#include <set>
 #include <string>
 #include <vector>
 
@@ -41,36 +41,21 @@ using std::set;
 using std::string;
 using std::vector;
 
-const char UDDCPlugin::USBDMX_DEVICE_PATH[] = "";
 const char UDDCPlugin::PLUGIN_NAME[] = "USBDMX.com";
 const char UDDCPlugin::PLUGIN_PREFIX[] = "usbdmxdotcom";
 const char UDDCPlugin::DEVICE_KEY[] = "device";
-
-//const char UDDCPlugin::DEFAULT_ADDRESS_TEMPLATE[] = "/dmx/universe/%d";
-//const char UDDCPlugin::DEFAULT_TARGETS_TEMPLATE[] = "";
-//const char UDDCPlugin::INPUT_PORT_COUNT_KEY[] = "input_ports";
-//const char UDDCPlugin::OUTPUT_PORT_COUNT_KEY[] = "output_ports";
-//const char UDDCPlugin::PORT_ADDRESS_TEMPLATE[] = "port_%d_address";
-//const char UDDCPlugin::PORT_TARGETS_TEMPLATE[] = "port_%d_targets";
-//const char UDDCPlugin::PORT_FORMAT_TEMPLATE[] = "port_%d_output_format";
-//const char UDDCPlugin::UDP_PORT_KEY[] = "udp_listen_port";
-
-//const char UDDCPlugin::BLOB_FORMAT[] = "blob";
-//const char UDDCPlugin::FLOAT_ARRAY_FORMAT[] = "float_array";
-//const char UDDCPlugin::FLOAT_INDIVIDUAL_FORMAT[] = "individual_float";
-//const char UDDCPlugin::INT_ARRAY_FORMAT[] = "int_array";
-//const char UDDCPlugin::INT_INDIVIDUAL_FORMAT[] = "individual_int";
-
-
-
+const char UDDCPlugin::USBDMX_DEVICE_PATH[] = "";
 
 /*
  * Start the plugin.
  */
 bool UDDCPlugin::StartHook() {
-    UDDCDevice *device = new UDDCDevice(this, m_preferences, m_plugin_adaptor);
+    UDDCDevice *device;
+
+    device = new UDDCDevice(this, m_preferences, m_plugin_adaptor);
 
     if (!device->Start()) {
+      delete device;
       return false;
     }
 
@@ -85,9 +70,10 @@ bool UDDCPlugin::StartHook() {
  * @return true on success, false on failure
  */
 bool UDDCPlugin::StopHook() {
+  //UDDCDevice *device;
+  //m_devices.clear();
   return true;
 }
-
 
 /*
  * Return the description for this plugin
@@ -95,7 +81,6 @@ bool UDDCPlugin::StopHook() {
 string UDDCPlugin::Description() const {
     return plugin_description;
 }
-
 
 /*
  * load the plugin prefs and default to sensible values
