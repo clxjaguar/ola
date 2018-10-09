@@ -37,11 +37,12 @@ class UDDCDevice: public ola::Device {
  public:
     UDDCDevice(AbstractPlugin *owner,
                class Preferences *preferences,
+	       PluginAdaptor *plugin_adaptor,
                const std::string &dev_path);
 
-    ~UDDCDevice();
+//    ~UDDCDevice();
     std::string DeviceId() const { return m_dev_path; }
-    ola::io::ConnectedDescriptor *GetSocket() const;
+//    ola::io::ConnectedDescriptor *GetSocket() const;
 /*
     bool AllowLooping() const { return true; }
     bool AllowMultiPortPatching() const { return true; }
@@ -57,7 +58,7 @@ class UDDCDevice: public ola::Device {
 
   private:
 	class Preferences *m_preferences;
-	const std::string m_dev_path;
+	std::string const m_dev_path;
 };
 }  // namespace uddc
 }  // namespace plugin

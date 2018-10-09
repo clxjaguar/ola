@@ -44,10 +44,12 @@ const char UDDCDevice::DEVICE_NAME[] = "usbdmx.com device";
  */
 UDDCDevice::UDDCDevice(AbstractPlugin *owner,
                        class Preferences *preferences,
+		       PluginAdaptor *plugin_adaptor,
                        const string &dev_path)
     : Device(owner, DEVICE_NAME),
-      m_dev_path(dev_path),
-      m_preferences(preferences)  {
+      m_plugin_adaptor(plugin_adaptor),
+      m_preferences(preferences),
+      m_dev_path(dev_path) {
 
   OLA_INFO << "Create device " << m_dev_path;
 }

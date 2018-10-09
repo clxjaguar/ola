@@ -50,7 +50,8 @@ const char UDDCPlugin::USBDMX_DEVICE_PATH[] = "";
  * Start the plugin.
  */
 bool UDDCPlugin::StartHook() {
-    m_device = new UDDCDevice(this, m_preferences, m_plugin_adaptor);
+    string device_name = m_preferences->GetValue(DEVICE_KEY);
+    m_device = new UDDCDevice(this, m_preferences, m_plugin_adaptor, device_name);
 
     if (!m_device->Start()) {
       delete m_device;
