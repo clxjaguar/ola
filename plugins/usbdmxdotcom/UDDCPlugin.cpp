@@ -82,7 +82,7 @@ bool UDDCPlugin::StartHook() {
     OLA_DEBUG << "Started device " << *it;
 
     m_plugin_adaptor->AddReadDescriptor(device->GetSocket());
-    m_plugin_adaptor->AddWriteDescriptor(device->GetSocket());
+    //m_plugin_adaptor->AddWriteDescriptor(device->GetSocket());
     m_plugin_adaptor->RegisterDevice(device);
     m_devices.push_back(device);
   }
@@ -99,7 +99,7 @@ bool UDDCPlugin::StartHook() {
 bool UDDCPlugin::StopHook() {
   vector<UDDCDevice*>::iterator iter;
   for (iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
-    m_plugin_adaptor->RemoveWriteDescriptor((*iter)->GetSocket());
+    //m_plugin_adaptor->RemoveWriteDescriptor((*iter)->GetSocket());
     m_plugin_adaptor->RemoveReadDescriptor((*iter)->GetSocket());
     DeleteDevice(*iter);
   }

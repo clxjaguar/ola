@@ -74,8 +74,6 @@ bool UDDCDevice::StartHook() {
   UDDCOutputPort *output_port = new UDDCOutputPort(this, 0);
   AddPort(output_port);
 
-  OLA_WARN << "TODO: the 'open()' will be there..";
-
   return true;
 }
 
