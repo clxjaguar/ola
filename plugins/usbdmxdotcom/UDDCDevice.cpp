@@ -18,8 +18,10 @@
 
 #include <string>
 #include <vector>
+#include <fcntl.h>
 
 #include "ola/Logging.h"
+#include "ola/io/IOUtils.h"
 #include "ola/io/SelectServerInterface.h"
 #include "plugins/usbdmxdotcom/UDDCPort.h"
 #include "plugins/usbdmxdotcom/UDDCDevice.h"
@@ -54,6 +56,13 @@ UDDCDevice::UDDCDevice(AbstractPlugin *owner,
   OLA_INFO << "Create device " << m_dev_path;
 }
 
+UDDCDevice::~UDDCDevice() {
+  if (m_socket) {
+    m_socket->Close();
+    delete m_socket;
+  }
+}
+
 /*
  * Start this device.
  * @returns true if the device started successfully, false otherwise.
@@ -69,6 +78,24 @@ bool UDDCDevice::StartHook() {
 
   return true;
 }
+
+bool UDDCDevice::Connect() {
+  OLA_DEBUG << "Connecting to " << m_dev_path;
+  int fd;
+  if (!ola::io::Open(m_dev_path, O_RDWR | O_NONBLOCK | O_NOCTTY, &fd)) {
+    return false;
+  }
+  
+  m_socket = new ola::io::DeviceDescriptor(fd);
+  
+  OLA_DEBUG << "Connected to " << m_dev_path;
+  return true;
+}
+
+void UDDCDevice::Disconnect() {
+  m_socket->Close();
+}
+
 }  // namespace uddc
 }  // namespace plugin
 }  // namespace ola

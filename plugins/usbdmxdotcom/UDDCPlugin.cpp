@@ -60,11 +60,19 @@ bool UDDCPlugin::StartHook() {
   for (it = device_names.begin(); it != device_names.end(); ++it) {
     if (it->empty()) {
       OLA_DEBUG << "No path configured for device, please set one in "
-          "ola-usbdmxdotcom.conf";
+        "ola-usbdmxdotcom.conf";
       continue;
     }
-    device = new UDDCDevice(this, m_preferences, m_plugin_adaptor, *it);
+
     OLA_DEBUG << "Adding device " << *it;
+    device = new UDDCDevice(this, m_preferences, m_plugin_adaptor, *it);
+
+    OLA_DEBUG << "Connecting device " << *it;
+    if (!device->Connect()) {
+      OLA_WARN << "Failed to connect device " << *it;
+      delete device;
+      continue;
+    }
 
     if (!device->Start()) {
       delete device;
@@ -73,10 +81,12 @@ bool UDDCPlugin::StartHook() {
 
     OLA_DEBUG << "Started device " << *it;
 
-//    m_plugin_adaptor->AddReadDescriptor(device->GetSocket());
+    m_plugin_adaptor->AddReadDescriptor(device->GetSocket());
+    m_plugin_adaptor->AddWriteDescriptor(device->GetSocket());
     m_plugin_adaptor->RegisterDevice(device);
     m_devices.push_back(device);
   }
+
   return true;
 }
 
@@ -89,30 +99,31 @@ bool UDDCPlugin::StartHook() {
 bool UDDCPlugin::StopHook() {
   vector<UDDCDevice*>::iterator iter;
   for (iter = m_devices.begin(); iter != m_devices.end(); ++iter) {
-//    m_plugin_adaptor->RemoveReadDescriptor((*iter)->GetSocket());
+    m_plugin_adaptor->RemoveWriteDescriptor((*iter)->GetSocket());
+    m_plugin_adaptor->RemoveReadDescriptor((*iter)->GetSocket());
     DeleteDevice(*iter);
   }
   m_devices.clear();
   return true;
 
-	UDDCDevice *device;
-	if (device) {
-		// stop the device
-		m_plugin_adaptor->UnregisterDevice(device);
-		bool ret = device->Stop();
-		delete device;
-		return ret;
-	}
+  UDDCDevice *device;
+  if (device) {
+    // stop the device
+    m_plugin_adaptor->UnregisterDevice(device);
+    bool ret = device->Stop();
+    delete device;
+    return ret;
+  }
 
-	m_devices.clear();
-	return true;
+  m_devices.clear();
+  return true;
 }
 
 /*
  * Return the description for this plugin
  */
 string UDDCPlugin::Description() const {
-    return plugin_description;
+  return plugin_description;
 }
 
 /*
@@ -127,7 +138,7 @@ bool UDDCPlugin::SetDefaultPreferences() {
   bool save = false;
 
   save |= m_preferences->SetDefaultValue(DEVICE_KEY, StringValidator(),
-                                         USBDMX_DEVICE_PATH);
+      USBDMX_DEVICE_PATH);
 
   if (save) {
     m_preferences->Save();
